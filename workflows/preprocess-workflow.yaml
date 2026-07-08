@@ -3,20 +3,26 @@ kind: WorkflowTemplate
 metadata:
   name: preprocess-telemetry
   annotations:
-    scenarios.ai.sap.com/name: "predictive-maintenance"
+    scenarios.ai.sap.com/id: "predictive-maintenance"
+    scenarios.ai.sap.com/name: "Predictive Maintenance"
     scenarios.ai.sap.com/description: "Predictive maintenance ML pipeline"
-    executables.ai.sap.com/name: "preprocess"
-    executables.ai.sap.com/description: "Preprocess telemetry data and engineer features"
-    artifacts.ai.sap.com/telemetry-store.kind: "dataset"
-    artifacts.ai.sap.com/processed_data.kind: "dataset"
+    executables.ai.sap.com/id: "preprocess"
+    executables.ai.sap.com/name: "Preprocess Telemetry"
+    executables.ai.sap.com/description: "Load telemetry data, engineer features, save processed data"
+    artifacts.ai.sap.com/telemetry-data.kind: "dataset"
+    artifacts.ai.sap.com/processed-data.kind: "dataset"
   labels:
     scenarios.ai.sap.com/id: "predictive-maintenance"
     executables.ai.sap.com/id: "preprocess"
-    ai.sap.com/version: "1.0.0"
+    ai.sap.com/version: "1.1.0"
 spec:
   imagePullSecrets:
     - name: docker-pj
   entrypoint: main
+  arguments:
+    artifacts:
+      - name: telemetry-data
+        path: /app/data/input
   templates:
     - name: main
       metadata:
@@ -24,20 +30,22 @@ spec:
           ai.sap.com/resourcePlan: starter
       inputs:
         artifacts:
-          - name: telemetry-store
-            path: /app/secrets/objectstore
+          - name: telemetry-data
+            path: /app/data/input
+      outputs:
+        artifacts:
+          - name: processed-data
+            path: /app/output
+            globalName: processed-data
+            archive:
+              none: {}
       container:
-        image: jpradeep1994/predictive-maintainance:preprocess-1.0
+        image: jpradeep1994/predictive-maintainance:preprocess-1.1
         command: ["python", "preprocess.py"]
         args:
           - "--source"
-          - "objectstore"
+          - "csv"
+          - "--input"
+          - "/app/data/input"
           - "--output"
           - "/app/output/processed_data.csv"
-        env:
-          - name: OBJECTSTORE_SECRET_PATH
-            value: /app/secrets/objectstore
-      outputs:
-        artifacts:
-          - name: processed_data
-            path: /app/output/
