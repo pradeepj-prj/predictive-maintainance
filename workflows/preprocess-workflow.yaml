@@ -11,11 +11,10 @@ metadata:
     executables.ai.sap.com/description: "Load telemetry data, engineer features, save processed data"
     artifacts.ai.sap.com/telemetry-data.kind: "dataset"
     artifacts.ai.sap.com/processed-data.kind: "dataset"
-    artifacts.ai.sap.com/processed-data.objectStoreName: "telemetry-store"
   labels:
     scenarios.ai.sap.com/id: "predictive-maintenance"
     executables.ai.sap.com/id: "preprocess"
-    ai.sap.com/version: "1.1.0"
+    ai.sap.com/version: "1.2.0"
 spec:
   imagePullSecrets:
     - name: docker-pj
@@ -24,6 +23,8 @@ spec:
     artifacts:
       - name: telemetry-data
         path: /app/data/input
+      - name: processed-data
+        path: /app/output
   templates:
     - name: main
       metadata:
