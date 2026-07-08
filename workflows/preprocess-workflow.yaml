@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: preprocess-telemetry
+  annotations:
+    scenarios.ai.sap.com/name: "predictive-maintenance"
+    scenarios.ai.sap.com/description: "Predictive maintenance ML pipeline"
+    executables.ai.sap.com/name: "preprocess"
+    executables.ai.sap.com/description: "Preprocess telemetry data and engineer features"
+    artifacts.ai.sap.com/processed_data.kind: "dataset"
+  labels:
+    scenarios.ai.sap.com/id: "predictive-maintenance"
+    executables.ai.sap.com/id: "preprocess"
+    ai.sap.com/version: "1.0.0"
+spec:
+  imagePullSecrets:
+    - name: docker-registry
+  entrypoint: main
+  templates:
+    - name: main
+      metadata:
+        labels:
+          ai.sap.com/resourcePlan: starter
+      container:
+        image: jpradeep1994/predictive-maintainance:preprocess-1.0
+        command: ["python", "preprocess.py"]
+        args:
+          - "--source"
+          - "objectstore"
+          - "--output"
+          - "/app/output/processed_data.csv"
+      outputs:
+        artifacts:
+          - name: processed_data
+            path: /app/output/
