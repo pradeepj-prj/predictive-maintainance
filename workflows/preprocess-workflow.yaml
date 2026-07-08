@@ -7,6 +7,7 @@ metadata:
     scenarios.ai.sap.com/description: "Predictive maintenance ML pipeline"
     executables.ai.sap.com/name: "preprocess"
     executables.ai.sap.com/description: "Preprocess telemetry data and engineer features"
+    artifacts.ai.sap.com/telemetry-store.kind: "dataset"
     artifacts.ai.sap.com/processed_data.kind: "dataset"
   labels:
     scenarios.ai.sap.com/id: "predictive-maintenance"
@@ -14,13 +15,17 @@ metadata:
     ai.sap.com/version: "1.0.0"
 spec:
   imagePullSecrets:
-    - name: docker-registry
+    - name: docker-pj
   entrypoint: main
   templates:
     - name: main
       metadata:
         labels:
           ai.sap.com/resourcePlan: starter
+      inputs:
+        artifacts:
+          - name: telemetry-store
+            path: /app/secrets/objectstore
       container:
         image: jpradeep1994/predictive-maintainance:preprocess-1.0
         command: ["python", "preprocess.py"]
@@ -29,6 +34,9 @@ spec:
           - "objectstore"
           - "--output"
           - "/app/output/processed_data.csv"
+        env:
+          - name: OBJECTSTORE_SECRET_PATH
+            value: /app/secrets/objectstore
       outputs:
         artifacts:
           - name: processed_data
