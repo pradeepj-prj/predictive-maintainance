@@ -14,15 +14,11 @@ metadata:
   labels:
     scenarios.ai.sap.com/id: "predictive-maintenance"
     executables.ai.sap.com/id: "preprocess"
-    ai.sap.com/version: "1.3.0"
+    ai.sap.com/version: "1.4.0"
 spec:
   imagePullSecrets:
     - name: docker-pj
   entrypoint: main
-  arguments:
-    artifacts:
-      - name: telemetry-data
-        path: /app/data/input
   templates:
     - name: main
       metadata:
