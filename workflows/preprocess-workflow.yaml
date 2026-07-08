@@ -36,7 +36,7 @@ spec:
             archive:
               none: {}
       container:
-        image: jpradeep1994/predictive-maintainance:preprocess-1.1
+        image: jpradeep1994/predictive-maintainance:preprocess-1.2
         command: ["python", "preprocess.py"]
         args:
           - "--source"
