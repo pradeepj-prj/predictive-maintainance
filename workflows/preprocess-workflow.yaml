@@ -36,7 +36,7 @@ spec:
             archive:
               none: {}
       container:
-        image: jpradeep1994/predictive-maintainance:preprocess-1.3
+        image: jpradeep1994/predictive-maintainance:v2.0
         command: ["python", "preprocess.py"]
         args:
           - "--source"
@@ -44,4 +44,6 @@ spec:
           - "--input"
           - "/app/data/input"
           - "--output"
-          - "/app/output/processed_data.csv"
+          - "/app/output"
+          - "--test-size"
+          - "0.2"

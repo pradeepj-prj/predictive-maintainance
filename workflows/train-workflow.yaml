@@ -1,0 +1,60 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: train-model
+  annotations:
+    scenarios.ai.sap.com/id: "predictive-maintenance"
+    scenarios.ai.sap.com/name: "Predictive Maintenance"
+    scenarios.ai.sap.com/description: "Predictive maintenance ML pipeline"
+    executables.ai.sap.com/id: "train"
+    executables.ai.sap.com/name: "Train Model"
+    executables.ai.sap.com/description: "Train XGBoost or SVC with hyperparameter tuning"
+    artifacts.ai.sap.com/train-data.kind: "dataset"
+    artifacts.ai.sap.com/trained-model.kind: "model"
+  labels:
+    scenarios.ai.sap.com/id: "predictive-maintenance"
+    executables.ai.sap.com/id: "train"
+    ai.sap.com/version: "1.0.0"
+spec:
+  imagePullSecrets:
+    - name: docker-pj
+  entrypoint: main
+  arguments:
+    parameters:
+      - name: model_type
+        description: "Model to train: xgboost or svc"
+        default: "xgboost"
+      - name: k_folds
+        description: "Number of folds for cross-validation"
+        default: "5"
+      - name: quick
+        description: "Use smaller param grid for quick testing (true/false)"
+        default: "false"
+  templates:
+    - name: main
+      metadata:
+        labels:
+          ai.sap.com/resourcePlan: starter
+      inputs:
+        artifacts:
+          - name: train-data
+            path: /app/data/input
+      outputs:
+        artifacts:
+          - name: trained-model
+            path: /app/output
+            globalName: trained-model
+            archive:
+              none: {}
+      container:
+        image: jpradeep1994/predictive-maintainance:v2.0
+        command: ["python", "train.py"]
+        args:
+          - "--model"
+          - "{{workflow.parameters.model_type}}"
+          - "--input"
+          - "/app/data/input/train.csv"
+          - "--output"
+          - "/app/output"
+          - "--k-folds"
+          - "{{workflow.parameters.k_folds}}"
