@@ -14,7 +14,7 @@ metadata:
   labels:
     scenarios.ai.sap.com/id: "predictive-maintenance"
     executables.ai.sap.com/id: "preprocess"
-    ai.sap.com/version: "1.4.0"
+    ai.sap.com/version: "2.0.0"
 spec:
   imagePullSecrets:
     - name: docker-pj
@@ -24,6 +24,9 @@ spec:
       - name: test_size
         description: "Proportion of data for test set (0.0-1.0)"
         default: "0.2"
+      - name: engineered_only
+        description: "Use only engineered features, not raw (true/false)"
+        default: "false"
   templates:
     - name: main
       metadata:
@@ -41,14 +44,13 @@ spec:
             archive:
               none: {}
       container:
-        image: jpradeep1994/predictive-maintainance:v2.0
-        command: ["python", "preprocess.py"]
-        args:
-          - "--source"
-          - "csv"
-          - "--input"
-          - "/app/data/input"
-          - "--output"
-          - "/app/output"
-          - "--test-size"
-          - "{{workflow.parameters.test_size}}"
+        image: jpradeep1994/predictive-maintainance:v2.1
+        command:
+          - "sh"
+          - "-c"
+          - |
+            if [ "{{workflow.parameters.engineered_only}}" = "true" ]; then
+              python preprocess.py --source csv --input /app/data/input --output /app/output --test-size {{workflow.parameters.test_size}} --engineered-only
+            else
+              python preprocess.py --source csv --input /app/data/input --output /app/output --test-size {{workflow.parameters.test_size}}
+            fi
