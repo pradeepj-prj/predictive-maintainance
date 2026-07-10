@@ -19,6 +19,11 @@ spec:
   imagePullSecrets:
     - name: docker-pj
   entrypoint: main
+  arguments:
+    parameters:
+      - name: test_size
+        description: "Proportion of data for test set (0.0-1.0)"
+        default: "0.2"
   templates:
     - name: main
       metadata:
@@ -46,4 +51,4 @@ spec:
           - "--output"
           - "/app/output"
           - "--test-size"
-          - "0.2"
+          - "{{workflow.parameters.test_size}}"
