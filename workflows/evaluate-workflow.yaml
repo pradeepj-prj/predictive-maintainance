@@ -50,7 +50,7 @@ spec:
           - "--model"
           - "/app/model"
           - "--test-data"
-          - "/app/data/test"
+          - "/app/data/test/test.csv"
           - "--output"
           - "/app/output"
           - "--model-name"

@@ -27,9 +27,6 @@ spec:
       - name: k_folds
         description: "Number of folds for cross-validation"
         default: "5"
-      - name: quick
-        description: "Use smaller param grid for quick testing (true/false)"
-        default: "false"
   templates:
     - name: main
       metadata:
