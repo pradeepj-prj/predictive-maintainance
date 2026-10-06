@@ -19,11 +19,10 @@ spec:
   inputs:
     artifacts:
       - name: trained-model
-  template:
+  template: |
     apiVersion: serving.kserve.io/v1beta1
     metadata:
-      labels: |
-        ai.sap.com/resourcePlan: starter
+      labels: ai.sap.com/resourcePlan=starter
     spec:
       predictor:
         minReplicas: 1
