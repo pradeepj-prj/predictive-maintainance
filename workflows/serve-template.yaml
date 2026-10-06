@@ -21,31 +21,24 @@ spec:
 
   template:
     apiVersion: serving.kserve.io/v1beta1
-
     metadata:
       labels: |
         ai.sap.com/resourcePlan: starter
-
     spec: |
       predictor:
         imagePullSecrets:
-          - name: docker-pj
-
+        - name: docker-pj
         containers:
-          - name: kserve-container
-            image: jpradeep1994/predictive-maintainance:v2.2
-
-            ports:
-              - containerPort: 8080
-                protocol: TCP
-
-            command:
-              - python
-              - serve.py
-
-            env:
-              - name: STORAGE_URI
-                value: "{{inputs.artifacts.trained_model}}"
-
-              - name: MODEL_PATH
-                value: /mnt/models
+        - name: kserve-container
+          image: jpradeep1994/predictive-maintainance:v2.2
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          command:
+          - python
+          - serve.py
+          env:
+          - name: STORAGE_URI
+            value: "{{inputs.artifacts.trained_model}}"
+          - name: MODEL_PATH
+            value: /mnt/models
