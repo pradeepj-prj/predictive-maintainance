@@ -22,7 +22,7 @@ spec:
   template:
     apiVersion: serving.kserve.io/v1beta1
     metadata:
-      labels:
+      labels: |
         ai.sap.com/resourcePlan: starter
     spec:
       predictor:
