@@ -9,9 +9,9 @@ metadata:
     executables.ai.sap.com/id: "evaluate"
     executables.ai.sap.com/name: "Evaluate Model"
     executables.ai.sap.com/description: "Evaluate trained model on test set"
-    artifacts.ai.sap.com/test-data.kind: "dataset"
-    artifacts.ai.sap.com/trained-model.kind: "model"
-    artifacts.ai.sap.com/evaluation-results.kind: "dataset"
+    artifacts.ai.sap.com/test_data.kind: "dataset"
+    artifacts.ai.sap.com/trained_model.kind: "model"
+    artifacts.ai.sap.com/evaluation_results.kind: "dataset"
   labels:
     scenarios.ai.sap.com/id: "predictive-maintenance"
     executables.ai.sap.com/id: "evaluate"
@@ -32,15 +32,15 @@ spec:
           ai.sap.com/resourcePlan: starter
       inputs:
         artifacts:
-          - name: trained-model
+          - name: trained_model
             path: /app/model
-          - name: test-data
+          - name: test_data
             path: /app/data/test
       outputs:
         artifacts:
-          - name: evaluation-results
+          - name: evaluation_results
             path: /app/output
-            globalName: evaluation-results
+            globalName: evaluation_results
             archive:
               none: {}
       container:
@@ -49,7 +49,7 @@ spec:
         args:
           - "--model"
           - "/app/model"
-          - "--test-data"
+          - "--test_data"
           - "/app/data/test/test.csv"
           - "--output"
           - "/app/output"

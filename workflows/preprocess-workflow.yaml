@@ -9,8 +9,8 @@ metadata:
     executables.ai.sap.com/id: "preprocess"
     executables.ai.sap.com/name: "Preprocess Telemetry"
     executables.ai.sap.com/description: "Load telemetry data, engineer features, save processed data"
-    artifacts.ai.sap.com/telemetry-data.kind: "dataset"
-    artifacts.ai.sap.com/processed-data.kind: "dataset"
+    artifacts.ai.sap.com/telemetry_data.kind: "dataset"
+    artifacts.ai.sap.com/processed_data.kind: "dataset"
   labels:
     scenarios.ai.sap.com/id: "predictive-maintenance"
     executables.ai.sap.com/id: "preprocess"
@@ -34,13 +34,13 @@ spec:
           ai.sap.com/resourcePlan: starter
       inputs:
         artifacts:
-          - name: telemetry-data
+          - name: telemetry_data
             path: /app/data/input
       outputs:
         artifacts:
-          - name: processed-data
+          - name: processed_data
             path: /app/output
-            globalName: processed-data
+            globalName: processed_data
             archive:
               none: {}
       container:
