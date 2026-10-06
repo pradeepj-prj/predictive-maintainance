@@ -1,42 +1,51 @@
 apiVersion: ai.sap.com/v1alpha1
 kind: ServingTemplate
+
 metadata:
   name: predictive-maintenance-server
+
   annotations:
-    scenarios.ai.sap.com/id: "predictive-maintenance"
     scenarios.ai.sap.com/name: "Predictive Maintenance"
-    executables.ai.sap.com/id: "serve"
     executables.ai.sap.com/name: "serve-model"
     executables.ai.sap.com/description: "Real-time failure prediction API"
     artifacts.ai.sap.com/trained_model.kind: "model"
+
   labels:
     scenarios.ai.sap.com/id: "predictive-maintenance"
-    executables.ai.sap.com/id: "serve"
     ai.sap.com/version: "1.0.0"
+
 spec:
   inputs:
     artifacts:
       - name: trained_model
+
   template:
     apiVersion: serving.kserve.io/v1beta1
+
     metadata:
-      annotations:
-        autoscaling.knative.dev/minScale: "1"
-      labels:
-        ai.sap.com/resourcePlan: "starter"
-    spec:
+      labels: |
+        ai.sap.com/resourcePlan: starter
+
+    spec: |
       predictor:
         imagePullSecrets:
           - name: docker-pj
+
         containers:
           - name: kserve-container
-            image: "jpradeep1994/predictive-maintainance:v2.2"
+            image: jpradeep1994/predictive-maintainance:v2.2
+
             ports:
               - containerPort: 8080
                 protocol: TCP
+
             command:
               - python
               - serve.py
+
             env:
+              - name: STORAGE_URI
+                value: "{{inputs.artifacts.trained_model}}"
+
               - name: MODEL_PATH
-                value: "/mnt/models"
+                value: /mnt/models
