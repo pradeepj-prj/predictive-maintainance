@@ -6,9 +6,9 @@ metadata:
     scenarios.ai.sap.com/id: "predictive-maintenance"
     scenarios.ai.sap.com/name: "Predictive Maintenance"
     executables.ai.sap.com/id: "serve"
-    executables.ai.sap.com/name: "Serve Model"
+    executables.ai.sap.com/name: "serve-model"
     executables.ai.sap.com/description: "Real-time failure prediction API"
-    artifacts.ai.sap.com/trained-model.kind: "model"
+    artifacts.ai.sap.com/trained_model.kind: "model"
   labels:
     scenarios.ai.sap.com/id: "predictive-maintenance"
     executables.ai.sap.com/id: "serve"
@@ -16,7 +16,7 @@ metadata:
 spec:
   inputs:
     artifacts:
-      - name: trained-model
+      - name: trained_model
   template:
     apiVersion: serving.kserve.io/v1beta1
     metadata:
