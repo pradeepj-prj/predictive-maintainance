@@ -10,7 +10,7 @@ metadata:
     executables.ai.sap.com/name: "Evaluate Model"
     executables.ai.sap.com/description: "Evaluate trained model on test set"
     artifacts.ai.sap.com/test-data.kind: "dataset"
-    artifacts.ai.sap.com/trained_model.kind: "model"
+    artifacts.ai.sap.com/trained-model.kind: "model"
     artifacts.ai.sap.com/evaluation-results.kind: "dataset"
   labels:
     scenarios.ai.sap.com/id: "predictive-maintenance"
@@ -32,7 +32,7 @@ spec:
           ai.sap.com/resourcePlan: starter
       inputs:
         artifacts:
-          - name: trained_model
+          - name: trained-model
             path: /app/model
           - name: test-data
             path: /app/data/test
