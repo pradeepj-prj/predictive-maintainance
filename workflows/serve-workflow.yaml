@@ -30,7 +30,7 @@ spec:
         - name: docker-pj
         containers:
         - name: kserve-container
-          image: jpradeep1994/predictive-maintainance:v2.3
+          image: jpradeep1994/predictive-maintainance:v2.4
           ports:
           - containerPort: 8080
             protocol: TCP
